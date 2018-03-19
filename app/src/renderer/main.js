@@ -8,6 +8,7 @@ import axios from 'axios'
 import Raven from 'raven-js'
 import { remote } from 'electron'
 import enableGoogleAnalytics from './google-analytics.js'
+const { ipcRenderer } = require('electron')
 
 const config = require('../../../config')
 
@@ -70,6 +71,10 @@ async function main () {
   })
 
   store = Store({ node })
+
+  ipcRenderer.on('action', (event, action) => {
+    store.dispatch(action)
+  })
 
   let error = getQueryParameter('error')
   if (error) {
