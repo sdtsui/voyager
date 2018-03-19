@@ -517,7 +517,8 @@ async function main () {
     onSuccesfulStart: () => {
       console.log('[START SUCCESS] Vue app successfuly started')
     },
-    onReconnectReq: reconnect.bind(this, seeds)
+    onReconnectReq: reconnect.bind(this, seeds),
+    webContents: mainWindow.webContents
   })
 
   started = true

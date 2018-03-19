@@ -18,8 +18,24 @@ let randomBondTx = (address, delegator) => ({
   height: 1000
 })
 
-module.exports = function ({ relayServerPort, lcdPort, mock = false, onReconnectReq, onSuccesfulStart } = {}) {
+module.exports = function ({ relayServerPort, lcdPort, mock = false, onReconnectReq, onSuccesfulStart, webContents } = {}) {
   let app = express()
+  require('http').Server(app)
+  require('express-ws')(app)
+
+  app.ws('/', (s, req) => {
+    console.error('websocket connection')
+    s.send(JSON.stringify({ type: 'handshake', payload: 'tst123' }), () => {})
+
+    s.on('message', function (data) {
+      let msg = JSON.parse(data)
+      if (msg.type === 'accept_handshake') {
+        console.log('accepted handshake with message', msg.payload)
+        webContents.send('action', { type: 'companion_connected' })
+        s.send(JSON.stringify({ type: 'connection_confirmed' }), () => {})
+      }
+    })
+  })
 
   // TODO this lets the server timeout until there is an external request
   // log all requests
