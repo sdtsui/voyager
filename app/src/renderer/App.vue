@@ -1,5 +1,6 @@
 <template lang="pug">
 #app
+  qr-code(:value="JSON.stringify(localIPs)" :options="{ size: 200 }" style="position: absolute; z-index: 10000;")
   template(v-if="!config.modals.session.active")
     app-header
     #app-content
@@ -13,6 +14,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import QrCode from '@xkeshi/vue-qrcode'
 import AppHeader from 'common/AppHeader'
 import AppFooter from 'common/AppFooter'
 import Notifications from '@nylira/vue-notifications'
@@ -28,9 +30,28 @@ export default {
     ModalError,
     ModalHelp,
     Notifications,
-    Session
+    Session,
+    QrCode
   },
-  computed: { ...mapGetters(['notifications', 'config']) },
+  computed: {
+    ...mapGetters(['notifications', 'config']),
+    localIPs () {
+      var os = require('os');
+      var ifaces = os.networkInterfaces();
+      var addresses = []
+      Object.keys(ifaces).forEach(function (ifname) {
+        ifaces[ifname].forEach(function (iface) {
+          if ('IPv4' !== iface.family || iface.internal !== false) {
+            // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+            return;
+          }
+
+          addresses.push(iface.address);
+        });
+      });
+      return addresses
+    }
+  },
   store
 }
 </script>
