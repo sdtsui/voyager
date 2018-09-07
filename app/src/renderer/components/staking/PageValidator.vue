@@ -34,11 +34,17 @@ tm-page(:title='validatorTitle(this.validator)')
       tm-list-item(dt="Commission Maximum" :dd="pretty(validator.commission_max) + ' %'")
       tm-list-item(dt="Commission Change-Rate" :dd="pretty(validator.commission_change_rate) + ' %'")
       tm-list-item(dt="Commission Change Today" :dd="pretty(validator.commission_change_today) + ' %'")
+
+    tm-btn(
+      @click.native="openModalStake"
+      color="primary"
+      value="Stake"
+    )
 </template>
 
 <script>
 import { mapGetters } from "vuex"
-import { TmListItem, TmPage, TmPart, TmToolBar } from "@tendermint/ui"
+import { TmBtn, TmListItem, TmPage, TmPart, TmToolBar } from "@tendermint/ui"
 import { TmDataError } from "common/TmDataError"
 import numeral from "numeral"
 import AnchorCopy from "common/AnchorCopy"
@@ -46,6 +52,7 @@ export default {
   name: "page-validator",
   components: {
     AnchorCopy,
+    TmBtn,
     TmListItem,
     TmPage,
     TmPart,
@@ -80,6 +87,9 @@ export default {
       shortOwner = shortOwner.slice(0, 8)
       title += ` - (${shortOwner})`
       return title
+    },
+    openModalStake() {
+      this.$store.commit("setModalStake", this.validator.owner)
     },
     pretty(num) {
       return numeral(num).format("0,0.00")

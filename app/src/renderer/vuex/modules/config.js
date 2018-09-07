@@ -19,6 +19,7 @@ export default () => {
         active: true,
         state: "loading"
       },
+      stake: { to: `` },
       noNodes: { active: false },
       nodeHalted: { active: false }
     }
@@ -53,6 +54,14 @@ export default () => {
     },
     setModalSessionState(state, value) {
       state.modals.session.state = value
+    },
+    setModalStake(
+      {
+        modals: { stake }
+      },
+      value
+    ) {
+      stake.to = value
     },
     setModalNoNodes(state, value) {
       state.modals.noNodes.active = value

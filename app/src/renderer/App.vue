@@ -9,6 +9,7 @@
       router-view
       app-footer
     modal-receive
+    modal-stake
   tm-notifications(:notifications='notifications' theme='cosmos')
   modal-error(v-if='config.modals.error.active' :body='config.modals.error.message')
   modal-no-nodes(v-if='config.modals.noNodes.active')
@@ -27,6 +28,7 @@ import ModalLcdApproval from "common/TmModalLCDApproval"
 import ModalNoNodes from "common/TmModalNoNodes"
 import ModalNodeHalted from "common/TmModalNodeHalted"
 import ModalReceive from "common/TmModalReceive"
+import ModalStake from "staking/ModalStake"
 import Onboarding from "common/TmOnboarding"
 import Session from "common/TmSession"
 import store from "./vuex/store"
@@ -39,6 +41,7 @@ export default {
     ModalHelp,
     ModalLcdApproval,
     ModalReceive,
+    ModalStake,
     TmNotifications,
     ModalNoNodes,
     ModalNodeHalted,
